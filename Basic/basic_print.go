@@ -1,10 +1,8 @@
-Code:
-```
+
 package main
 
 import (
 	"fmt"
-	// "text/template"
 )
 
 type trinitycore struct {
@@ -20,10 +18,6 @@ type trinitycore struct {
 
 }
 
-//func init() {
-//	tpl = template.Must(template.ParseFiles("tpl1.gohtml"))
-//}
-
 func main() {
 	var tc trinitycore
 	tc.id = 1
@@ -37,8 +31,8 @@ func main() {
 	fmt.Println("Game Build: \t", tc.gamebuild)
 	fmt.Println("Server ENV: %d %d",tc.os.os_family, tc.os.compiler)
 }
-```
 
+/*
 Output:
 
 ```
@@ -47,3 +41,6 @@ Game Version:     7.3.5
 Game Build:      26792
 Server ENV: %d %d Ubuntu18 GCC 7.4.0
 ```
+
+
+ */
