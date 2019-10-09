@@ -1,12 +1,15 @@
 package main
 
 import (
+	"GoLang/Basic/CURD/config"
 	"database/sql"
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/tkanos/gonfig"
 	"log"
 	"net/http"
+	"os"
 	"text/template"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type Employee struct {
@@ -15,13 +18,25 @@ type Employee struct {
 	City string
 }
 
-func dbConnect() (db *sql.DB) {
-	dbDriver := "mysql"
-	dbUser := "kienlt"
-	dbPass := "Asd@123123"
-	dbName := "go_blog"
+type Configuration struct {
+	MYSQL_HOST string
+	MYSQL_PORT string
+	MYSQL_USER string
+	MYSQL_PASS string
+	MYSQL_DB   string
+}
 
-	dbc, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
+func dbConnect() (db *sql.DB) {
+
+	configuration := Configuration{}
+	err := gonfig.GetConf(config.GetFileName(), &configuration)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(500)
+	}
+
+	dbc, err := sql.Open("mysql", configuration.MYSQL_USER+":"+configuration.MYSQL_PASS+"@"+"tcp("+configuration.MYSQL_HOST+":"+configuration.MYSQL_PORT+")"+"/"+configuration.MYSQL_DB)
+
 	if err != nil {
 		panic(err.Error())
 	}
@@ -143,14 +158,14 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		city := r.FormValue("city")
-		id := r.FormValue("id")
+		id := r.FormValue("uid")
 
-		insertForm, err := db.Prepare("Update employee set name=?, city=? where id=? ")
+		UpdateForm, err := db.Prepare("Update employee set name=?, city=? where id=? ")
 		if err != nil {
 			panic(err.Error())
 		}
 
-		insertForm.Exec(name, city, id)
+		UpdateForm.Exec(name, city, id)
 		log.Println("UPDATE: Name: " + name + " | City: " + city + "With ID: " + id)
 	}
 	defer db.Close()
@@ -181,5 +196,6 @@ func main() {
 	http.HandleFunc("/insert", Insert)
 	http.HandleFunc("/update", Update)
 	http.HandleFunc("/delete", Delete)
-	http.ListenAndServe(":8000",nil)
+	http.ListenAndServe(":8000", nil)
+
 }
