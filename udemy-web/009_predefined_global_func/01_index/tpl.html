@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ $name := .Name}}
+{{ if eq $name "kienlt" }}
+    <p> Correct Name</p>
+{{ else }}
+    <p>Wrong Name</p>
+{{end}}
+
+{{ if eq .Male true}}
+    <p>correct gender</p>
+{{ end}}
+
+{{ if gt .Age 27}}
+    <p>Your Age is greater than 27</p>
+{{else if ge .Age 27}}
+    <p> Your Age is equal to 27</p>
+{{end}}
+</body>
+</html>
