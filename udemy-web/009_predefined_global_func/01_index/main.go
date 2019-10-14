@@ -18,6 +18,10 @@ type Person struct {
 	Male bool
 }
 
+func (p Person) DoubleAge() int {
+	return p.Age * 2
+}
+
 func main() {
 
 	data := Person{
