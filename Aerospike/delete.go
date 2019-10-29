@@ -3,7 +3,7 @@ package main
 import (
 	//	"fmt"
 
-	"fmt"
+	// "fmt"
 	aero "github.com/aerospike/aerospike-client-go"
 )
 
@@ -20,10 +20,36 @@ func main() {
 	client, err := aero.NewClient("10.3.48.54", 3000)
 	panicOnError(err)
 
-	key, err := aero.NewKey("ns_aes_test", "user_info", 1)
+	key, err := aero.NewKey("ns_aes_test", "user_info", "key")
 	panicOnError(err)
 
-	existed, err := client.Delete(nil, key)
+	// Delete bin
+	bin1 := aero.NewBin("data", nil)
+	err = client.PutBins(nil,key,bin1)
 	panicOnError(err)
-	fmt.Printf("Record existed before delete? %v\n", existed)
+
+	//existed, err := client.Delete(nil, key) // Delete key
+	//panicOnError(err)
+	//fmt.Printf("Record existed before delete? %v\n", existed)
 }
+
+// Before
+/*
+aql> select * from ns_aes_test.user_info where PK="key"
+
+[
+[
+{
+"data": 11,
+"bin1": 42,
+*/
+
+// After delete bins
+/*
+aql> select * from ns_aes_test.user_info where PK="key"
+
+[
+[
+{
+"bin1": 42,
+*/
