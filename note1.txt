@@ -1,0 +1,4 @@
+### Dungeon_1 - Level 0
+- package main is a special package that is used to create executable program.  It is the entrypoint.
+- There is only one `package main` and only one `func main()`
+- We use `import` to import package to use in our code that you can use the functions, types, and variables defined in those packages!
