@@ -22,5 +22,5 @@ func main() {
     fmt.Printf("Quoted string: %q\n", c)
     fmt.Printf("Pointer address: %p\n", &a)
     fmt.Printf("Boolean: %t\n", d)
-	fmt.Printf("String: %c\n", zz)
+	fmt.Printf("String: %c\n", zz) // wrong type of format
 }
