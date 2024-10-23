@@ -100,3 +100,112 @@ This example demonstrates how to use various format specifiers with the `fmt.Pri
 - For float: 0.0
 - For string: ""
 - For functions, pointers, interfaces,maps: nil
+
+### Level 9
+In Go, the `&` operator is used to get the memory address of a variable. When you use [`fmt.Scanf`] to read input from the user, you need to provide a pointer to the variable where the input should be stored. This is because [`fmt.Scanf`] needs to modify the value of the variable, and it can only do that if it has access to the variable's memory address.
+
+#### Explanation
+
+- **`&name`**: The `&` operator gets the memory address of the variable [`name`]
+- **Pointer**: [`fmt.Scanf`] requires a pointer to the variable so it can store the input value at that memory address.
+
+#### Example
+
+Here's a simple example to illustrate this:
+
+```go
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    var name string
+    fmt.Print("Enter your name: ")
+    fmt.Scanf("%s", &name) // &name is a pointer to the variable name
+    fmt.Println("Hello,", name)
+}
+```
+
+#### Why a Pointer is Needed
+
+- **Direct Modification**: By passing a pointer,  can directly modify the value of [`name`]
+- **Memory Address**: The pointer provides the memory address where the input value should be stored.
+
+Without the `&` operator, [`fmt.Scanf`] would not be able to modify the value of [`name`], and the input would not be stored in the variable.
+
+
+### Level 11
+In Go, the _ (underscore) is known as the blank identifier. It is used to ignore values that you do not need to use. When you call a function that returns multiple values, you can use _ to ignore one or more of those values.
+
+Explanation
+In the line:
+```
+num, _ = strconv.Atoi(str)
+```
+
+strconv.Atoi(str) is a function that converts a string to an integer. It returns two values:
+
+The converted integer (num in this case).
+An error value (_ in this case).
+num is used to store the converted integer.
+
+_ is used to ignore the error value returned by strconv.Atoi.
+
+
+```
+package main
+
+import (
+    "fmt"
+    "strconv"
+)
+
+func main() {
+    str := "123"
+    num, _ := strconv.Atoi(str) // Ignore the error value
+    fmt.Println("Converted number:", num)
+}
+```
+
+Why Use _?
+- Ignoring Unused Values: If you are confident that the conversion will succeed and you do not need to handle the error, you can use _ to ignore the error value.
+- Simplifying Code: It simplifies the code by not requiring you to declare a variable for a value you do not intend to use.
+
+Note
+- While using _ can simplify the code, it is generally good practice to handle errors to make your code more robust and reliable. In production code, you might want to check the error value to handle any potential issues:
+
+```
+num, err := strconv.Atoi(str)
+if err != nil {
+    fmt.Println("Error converting string to integer:", err)
+    return
+}
+fmt.Println("Converted number:", num)
+```
+
+
+### Level 12 - Constants
+- Definition: Constants are immutable values that are known at compile time and do not change during the execution of the program.
+- Declaration: Use the const keyword to declare a constant. We need to define constants and it's value at the same time!
+- Example for ummitable: like Pi is never changes, so declare Pi value by constant
+- Syntax:
+```
+const <const name> <data type> = <value>
+```
+#### Untyped constant
+- constants are untyped unless they are explicitly given a type at declaration
+- allow for flexibility
+```
+const age = 33
+const name, age = "kienlt", 33
+```
+
+#### Typed constant
+- constants are typed when you explicitly specify the type in the declaration 
+- no flexibility
+```
+const name string = "kien luong trung"
+const age int = 33
+```
